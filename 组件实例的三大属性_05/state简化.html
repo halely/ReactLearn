@@ -21,27 +21,14 @@
     <script type="text/babel">
         // 1.创建函数式组件 
         class Weather extends React.Component {
-            //构造器的调用次数和实例的使用有关，目前次数为1
-            constructor(props) {
-                super(props);
-                this.state = { isHot: true }
-                // 为了在回调中使用 `this`，这个绑定是必不可少的
-                this.handleClick = this.handleClick.bind(this);
-            }
+            state = { isHot: true }
             // //render会调用1+n次【1就是初始化的时候调用的，n就是每一次修改state的时候调用的】
             render() {
                 console.log(this)
                 let { isHot } = this.state;
                 return (<h1 onClick={this.changeWeather}>今天天气很{isHot ? '炎热' : '凉爽'}</h1>)
             }
-            // 绑定方法1
-            handleClick() {
-                // 状态不能直接更改，需要使用内置的API
-                this.setState(state => ({
-                    isHot: !state.isHot
-                }))
-            }
-            //绑定方法2，使用箭头函数，this一直指向创建的位置
+            //使用箭头函数，this一直指向创建的位置作用域
             changeWeather = () => {
                 // 状态不能直接更改，需要使用内置的API
                 //必须通过setState来执行更改，且更好的是合并而不是替换

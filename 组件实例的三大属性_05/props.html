@@ -10,7 +10,8 @@
 
 
 <body>
-    <div id="root"></div>
+    <div id="root1"></div>
+    <div id="root2"></div>
     <!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
     <!-- 1.引入react核心库 -->
     <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
@@ -25,7 +26,6 @@
         class Person extends React.Component {
             render() {
                 let { props } = this;
-                console.log(props)
                 return (
                     <ul>
                         <li>姓名：{props.name}</li>
@@ -35,13 +35,21 @@
                 )
             }
         }
+        //设置类型和是否必填
         Person.propTypes = {
-            name:PropTypes.string.isRequired//限制名称是字符串类型切必填
+            name: PropTypes.string.isRequired,//限制名称是字符串类型切必填
+            sex: PropTypes.string,
+            age: PropTypes.number
         }
-
-        const userData = { name: 'Hale', age: 25, sex: 'man' }
+        //设置默认值
+        Person.defaultProps = {
+            sex: '人妖'
+        }
+        const userData1 = { name: 'Hale', age: 25, sex: 'man' }
+        const userData2 = { name: '张三', age: 44 }
         //2.渲染组件
-        ReactDOM.render(<Person {...userData} />, document.getElementById("root"));
+        ReactDOM.render(<Person {...userData1} />, document.getElementById("root1"));
+        ReactDOM.render(<Person {...userData2} />, document.getElementById("root2"));
 
     </script>
 </body>

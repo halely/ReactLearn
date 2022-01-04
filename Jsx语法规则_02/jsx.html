@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+
+<body>
+    <div id="root">
+    </div>
+    <!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+    <!-- 1.引入react核心库 -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <!-- 2.引入react-dome,用于支持react操作DOM -->
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- 3.引入bable,用于将jsx转换成js -->
+    <script src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        // 设置变量
+        const MyId = "Hale";
+        const MyData = "My Love React";
+        // 1.创建虚拟DOM
+        /* 虚拟DOM不需要加引号 */
+        const VDOM = (
+            <div>
+                <h1 id={MyId.toLowerCase()}>
+                    <span className="titleSpan" style={{ fontSize: '50px', color: 'white' }}>{MyData.toLowerCase()}</span>
+                </h1>
+                <input type="text"  />
+            </div>
+
+        )
+
+        // 2.渲染，如果有多个渲染同一个容器，后面的会将前面的覆盖掉
+        ReactDOM.render(VDOM, document.getElementById("root"))
+        /*    
+        1.定义虚拟DOM，不能使用“”
+        2.标签中混入JS表达式的时候使用{}
+        3.样式的类名指定不要使用class，使用className
+        4.内敛样式要使用style={{样式:"值"}}
+        5.不能有多个根标签，只能有一个跟标签
+        6.标签必须闭合
+        7.标签首字母
+           (1)如果小写字母开头，就将标签转化为html同名元素，如果html中无该标签对应的元素，就报错
+           (2)如果是大写字母开头，react就去渲染对应的组件，如果没有就报错
+  
+        */
+    </script>
+</body>
+
+</html>

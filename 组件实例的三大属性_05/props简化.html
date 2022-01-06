@@ -22,7 +22,7 @@
     <!-- 4.用于对组件标签数学进行限制 -->
     <script src="../js/prop-types.js"></script>
     <script type="text/babel">
-        // 1.创建类式组件 
+        // 1.创建函数式组件 
         class Person extends React.Component {
             render() {
                 let { props } = this;
@@ -35,17 +35,18 @@
                     </ul>
                 )
             }
-        }
-        //设置类型和是否必填
-        Person.propTypes = {
-            name: PropTypes.string.isRequired,//限制名称是字符串类型切必填
-            sex: PropTypes.string,
-            age: PropTypes.number,
-            speak: PropTypes.func
-        }
-        //设置默认值
-        Person.defaultProps = {
-            sex: '人妖'
+            //设置类型和是否必填
+            static propTypes = {
+                name: PropTypes.string.isRequired,//限制名称是字符串类型切必填
+                sex: PropTypes.string,
+                age: PropTypes.number,
+                speak: PropTypes.func
+            }
+            //设置默认值
+            static defaultProps = {
+                sex: '人妖'
+            }
+
         }
         const userData1 = { name: 'Hale', age: 25, sex: 'man' }
         const userData2 = { name: '张三', age: 44 }

@@ -22,19 +22,15 @@
     <!-- 4.用于对组件标签数学进行限制 -->
     <script src="../js/prop-types.js"></script>
     <script type="text/babel">
-        // 1.创建类式组件 
-        class Person extends React.Component {
-            render() {
-                let { props } = this;
-                //props是只读的，不能在内部修改
-                return (
-                    <ul>
-                        <li>姓名：{props.name}</li>
-                        <li>年龄：{props.age}</li>
-                        <li>性别：{props.sex}</li>
-                    </ul>
-                )
-            }
+        // 1.创建函数式组件 
+        function Person(props) {
+            return (
+                <ul>
+                    <li onClick={props.speak}>姓名：{props.name}</li>
+                    <li>年龄：{props.age}</li>
+                    <li>性别：{props.sex}</li>
+                </ul>
+            )
         }
         //设置类型和是否必填
         Person.propTypes = {

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    button {
+        margin: 0 10px;
+    }
+</style>
+
+<body>
+    <div id="root"></div>
+    <!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+    <!-- 1.引入react核心库 -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <!-- 2.引入react-dome,用于支持react操作DOM -->
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- 3.引入bable,用于将jsx转换成js -->
+    <script src="../js/babel.min.js"></script>
+    <!-- 4.用于对组件标签数学进行限制 -->
+    <script src="../js/prop-types.js"></script>
+    <script type="text/babel">
+        // 1.创建类式组件 
+        class Demo extends React.Component {
+            state = { isHot: true }
+            showData = () => {
+                alert(this.input1.value)
+            }
+            ChanegWeather = () => [
+                this.setState({
+                    isHot: !this.state.isHot
+                })
+            ]
+            SaveRef = (c) => {
+                this.input1 = c;
+                console.log('a:', c)
+            }
+            render() {
+                const { isHot } = this.state;
+                return (
+                    <div>
+                        <span>今天天气很{isHot ? '炎热' : '寒冷'}</span>
+                        <button onClick={this.ChanegWeather} >改变天气</button>
+                        {/*<input ref={c => { this.input1 = c; console.log('@:', c) }} type="text" placeholder="点击案例提示数据" /> */}
+                        <input ref={this.SaveRef} type="text" placeholder="点击案例提示数据" />
+                        <button onClick={this.showData} >点击我显示左侧数据</button>
+                    </div>
+                )
+            }
+        }
+        /* 注意
+            如果 ref 回调函数是以内联函数的方式定义的，
+            在更新过程中它会被执行两次，第一次传入参数 null，
+            然后第二次会传入参数 DOM 元素。这是因为在每次渲染
+            时会创建一个新的函数实例，
+            所以 React 清空旧的 ref 并且设置新的
+            。通过将 ref 的回调函数定义成 class 的绑定函数的方式可以避免上述问题，
+            但是大多数情况下它是无关紧要的。
+        */
+        //2.渲染组件
+        ReactDOM.render(<Demo />, document.getElementById("root"));
+    </script>
+</body>
+
+</html>

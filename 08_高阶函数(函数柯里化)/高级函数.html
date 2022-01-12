@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    label {
+        display: inline-block;
+        min-width: 60px;
+    }
+</style>
+
+<body>
+    <div id="root"></div>
+
+</body>
+<!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+<!-- 1.引入react核心库 -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<!-- 2.引入react-dome,用于支持react操作DOM -->
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<!-- 3.引入bable,用于将jsx转换成js -->
+<script src="../js/babel.min.js"></script>
+<!-- 4.用于对组件标签数学进行限制 -->
+<script src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+
+    /*
+        (1).高级函数：符合下面；两个规范之后任意一个
+                1.如果函数的参数是函数
+                2.如果函数返回一个函数
+        (2).函数的珂里化：通过函数调用继续返回函数的方式，实现多次接收参数最后统一处理的函数编码形式 
+    */
+
+    class Login extends React.Component {
+        state = { username: '', password: '' }
+        setFormData = (formType) => {
+            return ($event) => {
+                let val = $event.target.value;
+                console.log(val);
+                this.setState({
+                    [formType]: val
+                })
+            }
+        }
+        render() {
+            return (
+                <form>
+                    <label>用户名:</label>
+
+                    {/*直接调用回调函数也是可以的：将数据传递过去就可以*/}
+                    {/*<input onChange={e=>this.setFormData('username', e)} type="text" name="username" /> */}
+                    <input type="text" onChange={this.setFormData('username')} name="username" /><br />
+                    <label>密码:</label>
+                    <input type="password" onChange={this.setFormData('username')} name="password" /><br />
+                    <button>登录</button>
+                </form>
+            )
+        }
+    }
+    ReactDOM.render(<Login />, document.getElementById("root"));
+</script>
+
+</html>

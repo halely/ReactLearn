@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+<!-- 1.引入react核心库 -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<!-- 2.引入react-dome,用于支持react操作DOM -->
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<!-- 3.引入bable,用于将jsx转换成js -->
+<script src="../js/babel.min.js"></script>
+<!-- 4.用于对组件标签数学进行限制 -->
+<script src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+
+    /*
+          组件从创建到死亡，会经过一些特定的阶段
+          React组件中包含一系列钩子函数{生命周期回调函数}，会在特定的时刻调用
+          我们在定义组件的时候，会在特定的声明周期回调函数中，做特定的工作
+    */
+    class Life extends React.Component {
+        state = { opacity: 1 }
+        //初始化和状态更新的时候调用
+        render() {
+            return (
+                <div>
+                    <h1 style={{ opacity: this.state.opacity }}>React学不会怎么办？</h1>
+                    <button onClick={this.death}>不活了</button>
+                </div>
+            )
+        }
+        //组件挂载完毕调用
+        componentDidMount() {
+            this.timer = setInterval(() => {
+                let { opacity } = this.state;
+                opacity -= 0.1;
+                if (opacity <= 0) opacity = 1;
+                this.setState({ opacity })
+            }, 200)
+        }
+        //组件将要呗卸载
+        componentWillUnmount() {
+            //清除定时器
+            clearInterval(this.timer)
+        }
+        death = () => {
+
+            //卸载资源
+            ReactDOM.unmountComponentAtNode(document.getElementById('root'))
+        }
+    }
+
+
+    ReactDOM.render(<Life />, document.getElementById("root"));
+</script>
+
+</html>

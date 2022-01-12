@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+</body>
+<!-- 引入依赖 ,引入的时候，必须就按照这个步骤-->
+<!-- 1.引入react核心库 -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<!-- 2.引入react-dome,用于支持react操作DOM -->
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<!-- 3.引入bable,用于将jsx转换成js -->
+<script src="../js/babel.min.js"></script>
+<!-- 4.用于对组件标签数学进行限制 -->
+<script src="../js/prop-types.js"></script>
+
+<script type="text/babel">
+    /* 
+      1.初始节点：油ReactDOM.render()触发--初次渲染
+        a.constructor
+        b.static getDerivedStateFromProps
+        c.render
+        d.componentDidUpdate ===>常用：定时器、发生请求、订阅消息初始化
+      2.更新阶段:由组件内部this.setSate()或父组件render触发
+        a.static getDerivedStateFromProps
+        b.shouldComponentUpdate
+        c.render
+        d.getSnapshotBeforeUpdate
+        e.componentDidUpdate
+      3.卸载组件：由ReactDOM.unmountComponentAtNodd()触发
+        a.componentWillUnmount ===>常用：定时器、发生请求、订阅消息收尾
+    */
+    //创建组件
+    class Count extends React.Component {
+        constructor(props) {
+            console.log('构造器：count-constructor')
+            super(props)
+            this.state = { count: 0 }
+        }
+        add = () => {
+            let { count } = this.state;
+            count += 1;
+            this.setState({
+                count
+            })
+        }
+        death = () => {
+            //卸载资源
+            ReactDOM.unmountComponentAtNode(document.getElementById('root'))
+        }
+        force = () => {
+            this.forceUpdate()
+        }
+
+        // //组件将要挂载的钩子(旧版本)
+        // UNSAFE_componentWillMount() {
+        //     console.log('将要挂载：count-componentWillMount')
+        // }
+
+        //在render之前调用，需要返回一个内置对象，他的返回值是用来更新state,如果返回null则不更新
+        //可以在state的值在任何情况下都取决于props的时候使用
+        static getDerivedStateFromProps(props, prestate) {
+            //prestate为之前的state
+            console.log('count-getDerivedStateFromProps', props, prestate)
+            return null
+
+        }
+
+
+
+        //初始化和状态更新的时候调用
+        render() {
+            console.log('count-render')
+            return (
+                <div>
+                    <h1>当前的和为：{this.state.count}</h1>
+                    <button onClick={this.add}>加1</button>
+                    <button onClick={this.death}>卸载组件</button>
+                    <button onClick={this.force}>不更改值，强制更新视图</button>
+
+                </div>
+            )
+        }
+        //组件挂载完毕调用
+        componentDidMount() {
+            console.log('挂载完毕：count-componentDidMount')
+        }
+
+        //是否要更新视图：如果不写这个钩子函数。则默认返回true
+        shouldComponentUpdate() {
+            console.log('是否更新视图：count-shouldComponentUpdate')
+            return true;//必须有返回值(布尔值)，如果是true则执行更新，否则不更新
+        }
+        // //组件将要更新的
+        // UNSAFE_componentWillUpdate() {
+        //     console.log('将要更新：count-componentWillUpdate')
+        // }
+        //更新之前获取快照：count
+        getSnapshotBeforeUpdate() {
+            console.log('更新之前获取快照：count-getSnapshotBeforeUpdate')
+            return null
+        }
+        //组件更新完毕
+        componentDidUpdate(preProps, preState, snapshotValue) {
+            console.log('更新完毕：count-componentDidUpdate', preProps, preState, snapshotValue)
+        }
+
+        //组件将要被卸载
+        componentWillUnmount() {
+            console.log('将要被卸载：count-componentWillUnmount')
+        }
+
+    }
+
+    class A extends React.Component {
+        constructor(props) {
+            console.log("构造器：A --- constructor")
+            super(props);
+            this.state = { num: 1 }
+        }
+        add = () => {
+            let { num } = this.state;
+            this.setState({ num: num + 1 });
+        }
+        render() {
+            console.log("A --- render");
+            return (
+                <div>
+                    <h1>这个是第{this.state.num}个</h1>
+                    <B num={this.state.num} />
+                    <button onClick={this.add}>点击加一</button>
+                </div>
+            )
+        }
+        //组件将要挂载的钩子
+        UNSAFE_componentWillMount() {
+            console.log("将要挂载：A --- componentWillMount");
+        }
+        //组件挂载完毕调用
+        componentDidMount() {
+            console.log("挂载完毕：A --- componenetDidMount");
+        }
+        //更新操作 setState之后执行，判断是否可以更新（true可以，false不可以）
+        shouldComponentUpdate() {
+            console.log("是否更新视图：A --- shouldComponentUpdate");
+            return true;
+        }
+        // 组件将要更新的
+        UNSAFE_componentWillUpdate() {
+            console.log("将要更新：A --- componentWillUpdate");
+        }
+        //组件更新之后
+        componentDidUpdate() {
+            console.log("更新完毕：A --- componentDidUpdate");
+        }
+
+        //卸载组件之后
+        componentWillUnmonut() {
+            console.log("卸载组件：A --- componentWillUnmonut");
+        }
+
+    }
+    class B extends React.Component {
+        constructor(props) {
+            console.log("构造器B --- constructor")
+            super(props);
+        }
+        render() {
+            console.log("B --- render");
+            return (
+                <div>
+                    <h1>这个是B组件,传递过来的是：{this.props.num}</h1>
+
+                </div>
+            )
+        }
+        //父组件进行了更新，子组件先执行这个
+        // 值得注意的是，第一次传的时候不会触发
+        UNSAFE_componentWillReceiveProps(props) {
+            console.log("B --- componentWillReceiveProps", props);
+        }
+        //组件将要挂载的钩子
+        UNSAFE_componentWillMount() {
+            console.log("将要挂载：B --- componentWillMount");
+        }
+        //组件挂载完毕调用
+        componentDidMount() {
+            console.log("挂载完毕：B --- componenetDidMount");
+        }
+        //更新操作 setState之后执行，判断是否可以更新（true可以，false不可以）
+        shouldComponentUpdate() {
+            console.log("是否更新视图：B --- shouldComponentUpdate");
+            return true;
+        }
+        // 组件将要更新的
+        UNSAFE_componentWillUpdate() {
+            console.log("将要更新：B --- componentWillUpdate");
+        }
+        //组件更新之后
+        componentDidUpdate() {
+            console.log("更新完毕：B--- componentDidUpdate");
+        }
+
+        //卸载组件之后
+        componentWillUnmonut() {
+            console.log("卸载组件：B --- componentWillUnmonut");
+        }
+    }
+
+    ReactDOM.render(<Count />, document.getElementById("root"));
+</script>
+
+</html>
